@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { motion } from 'framer-motion';
@@ -54,7 +53,7 @@ const product: Product = {
     }
 };
 
-export default function ProductPage({ params }: { params: { id: string } }) {
+export default function ProductPage() {
     const router = useRouter();
     const addItem = useCartStore((state) => state.addItem);
     const [isAuthenticated, setIsAuthenticated] = useState(false);

@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import Image from 'next/image';
-import Link from 'next/link';
-import { Button } from '@/components';
-import { AuthForm } from '@/components';
+'use client';
 
-export default function RegisterPage({ searchParams }: { searchParams: { redirect?: string } }) {
+import { Suspense } from 'react';
+import { AuthForm } from '@/components';
+import Link from 'next/link';
+
+export default function RegisterPage() {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -19,7 +19,7 @@ export default function RegisterPage({ searchParams }: { searchParams: { redirec
                 <p className="mt-2 text-center text-sm text-gray-600">
                     Or{' '}
                     <Link
-                        href={`/login?redirect=${searchParams.redirect || '/'}`}
+                        href={'/login'}
                         className="font-medium text-red-600 hover:text-red-500"
                     >
                         sign in to your existing account
@@ -29,7 +29,19 @@ export default function RegisterPage({ searchParams }: { searchParams: { redirec
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 border border-gray-200">
-                    <AuthForm type="register" redirect={searchParams.redirect} />
+                    {/* Wrapped AuthForm in Suspense with loading fallback */}
+                    <Suspense fallback={
+                        <div className="text-center py-8">
+                            <div className="animate-pulse flex flex-col space-y-4">
+                                <div className="h-10 bg-gray-200 rounded"></div>
+                                <div className="h-10 bg-gray-200 rounded"></div>
+                                <div className="h-10 bg-gray-200 rounded"></div>
+                                <div className="h-10 bg-gray-300 rounded"></div>
+                            </div>
+                        </div>
+                    }>
+                        <AuthForm type="register" />
+                    </Suspense>
                 </div>
             </div>
         </div>

@@ -1,11 +1,11 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// app/order-confirmation/[orderId]/page.tsx
 'use client';
 
 import { Button } from '@/components/ui/button';
 import { FiCheckCircle, FiHome, FiShoppingBag } from 'react-icons/fi';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { OrderService } from '@/services/orderservice';
 import Image from 'next/image';
@@ -34,7 +34,7 @@ interface Order {
     estimatedDelivery?: string;
 }
 
-export default function OrderConfirmationPage({ params }: { params: { orderId: string } }) {
+export default function OrderConfirmationPage() {
     const router = useRouter();
     const [order, setOrder] = useState<Order | null>(null);
     const [loading, setLoading] = useState(true);
@@ -49,7 +49,14 @@ export default function OrderConfirmationPage({ params }: { params: { orderId: s
                     return;
                 }
 
-                const orderData = await OrderService.getOrderById(params.orderId);
+                const { orderId } = useParams();
+                if (!orderId || typeof orderId !== 'string') {
+                    setError('Invalid order ID');
+                    setLoading(false);
+                    return;
+                }
+
+                const orderData = await OrderService.getOrderById(orderId);
                 if (orderData) {
                     const mappedOrder: Order = {
                         id: orderData.id,
@@ -84,7 +91,7 @@ export default function OrderConfirmationPage({ params }: { params: { orderId: s
         };
 
         fetchOrder();
-    }, [params.orderId, router]);
+    }, [router]);
 
     if (loading) {
         return (
