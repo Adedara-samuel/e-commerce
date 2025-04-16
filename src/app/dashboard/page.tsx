@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { FiBox, FiDollarSign, FiUsers, FiShoppingCart, FiStar, FiTrendingUp, FiAlertCircle } from 'react-icons/fi';
 import { Card, LineChart, BarChart, RecentOrders, TopProducts } from '@/features/dashboard';
 import { useRouter } from 'next/navigation';
+import { SettingsIcon } from 'lucide-react';
 
 export default function DashboardPage() {
     const router = useRouter();
@@ -54,11 +55,11 @@ export default function DashboardPage() {
                             onClick={() => router.push('/dashboard/settings')}
                             className="text-gray-600 hover:text-red-600 transition-colors"
                         >
-                            Settings
+                            <SettingsIcon className="h-6 w-6" />
                         </button>
-                        <button className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors">
+                        {/* <button className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors">
                             New Product
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             </header>
