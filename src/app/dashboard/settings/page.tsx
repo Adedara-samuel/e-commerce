@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { FiUser, FiLock, FiBell, FiCreditCard, FiGlobe, FiDatabase, FiLogOut, FiX, FiCheck } from 'react-icons/fi';
 import { Card, Switch, Button, Input, Select, Checkbox } from '@/components/ui';
 import { useRouter } from 'next/navigation';
@@ -69,8 +69,9 @@ export default function SettingsPage() {
         ],
         currentPlan: 'Premium ($29/month)',
     });
-    const [formData, setFormData] = useState<Partial<UserData> & { deleteConfirmed?: boolean }>({});
+    const [formData, setFormData] = useState<Partial<UserData>>({});
     const [deleteConfirm, setDeleteConfirm] = useState('');
+    const [deleteConfirmed, setDeleteConfirmed] = useState(false);
     const [exportFormat, setExportFormat] = useState('json');
     const [newPaymentMethod, setNewPaymentMethod] = useState({
         cardNumber: '',
@@ -450,7 +451,7 @@ export default function SettingsPage() {
                         <Select
                             name="language"
                             defaultValue={userData.language}
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
                         >
                             <option>English (United States)</option>
                             <option>English (UK)</option>
@@ -465,7 +466,7 @@ export default function SettingsPage() {
                         <Select
                             name="region"
                             defaultValue={userData.region}
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
                         >
                             <option>United States</option>
                             <option>United Kingdom</option>
@@ -479,35 +480,29 @@ export default function SettingsPage() {
                         <h3 className="text-sm font-medium text-gray-700 mb-2">Date Format</h3>
                         <div className="space-y-2">
                             <label className="flex items-center space-x-2">
-                                <input
-                                    type="radio"
+                                <Radio
                                     name="dateFormat"
-                                    value="MM/DD/YYYY"
-                                    checked={userData.dateFormat === 'MM/DD/YYYY'}
+                                    values="MM/DD/YYYY"
+                                    // checked={userData.dateFormat === 'MM/DD/YYYY'}
                                     onChange={() => setFormData(prev => ({ ...prev, dateFormat: 'MM/DD/YYYY' }))}
-                                    className="form-radio"
                                 />
                                 <span>MM/DD/YYYY (12/31/2025)</span>
                             </label>
                             <label className="flex items-center space-x-2">
-                                <input
-                                    type="radio"
+                                <Radio
                                     name="dateFormat"
-                                    value="DD/MM/YYYY"
-                                    checked={userData.dateFormat === 'DD/MM/YYYY'}
+                                    values="DD/MM/YYYY"
+                                    // checked={userData.dateFormat === 'DD/MM/YYYY'}
                                     onChange={() => setFormData(prev => ({ ...prev, dateFormat: 'DD/MM/YYYY' }))}
-                                    className="form-radio"
                                 />
                                 <span>DD/MM/YYYY (31/12/2025)</span>
                             </label>
                             <label className="flex items-center space-x-2">
-                                <input
-                                    type="radio"
+                                <Radio
                                     name="dateFormat"
-                                    value="YYYY-MM-DD"
-                                    checked={userData.dateFormat === 'YYYY-MM-DD'}
+                                    values="YYYY-MM-DD"
+                                    // checked={userData.dateFormat === 'YYYY-MM-DD'}
                                     onChange={() => setFormData(prev => ({ ...prev, dateFormat: 'YYYY-MM-DD' }))}
-                                    className="form-radio"
                                 />
                                 <span>YYYY-MM-DD (2025-12-31)</span>
                             </label>
@@ -548,35 +543,29 @@ export default function SettingsPage() {
                         <h3 className="text-sm font-medium text-gray-700 mb-2">Export Format</h3>
                         <div className="space-y-2">
                             <label className="flex items-center space-x-2">
-                                <input
-                                    type="radio"
+                                <Radio
                                     name="exportFormat"
-                                    value="json"
-                                    checked={exportFormat === 'json'}
+                                    values="json"
+                                    // checked={exportFormat === 'json'}
                                     onChange={() => setExportFormat('json')}
-                                    className="form-radio"
                                 />
                                 <span>JSON (Recommended for developers)</span>
                             </label>
                             <label className="flex items-center space-x-2">
-                                <input
-                                    type="radio"
+                                <Radio
                                     name="exportFormat"
-                                    value="csv"
-                                    checked={exportFormat === 'csv'}
+                                    values="csv"
+                                    // checked={exportFormat === 'csv'}
                                     onChange={() => setExportFormat('csv')}
-                                    className="form-radio"
                                 />
                                 <span>CSV (Spreadsheet format)</span>
                             </label>
                             <label className="flex items-center space-x-2">
-                                <input
-                                    type="radio"
+                                <Radio
                                     name="exportFormat"
-                                    value="xml"
-                                    checked={exportFormat === 'xml'}
+                                    values="xml"
+                                    // checked={exportFormat === 'xml'}
                                     onChange={() => setExportFormat('xml')}
-                                    className="form-radio"
                                 />
                                 <span>XML (Legacy systems)</span>
                             </label>
@@ -628,7 +617,7 @@ export default function SettingsPage() {
                     <div>
                         <label className="flex items-center space-x-2">
                             <Checkbox
-                                checked={formData.deleteConfirmed as boolean || false}
+                                checked={deleteConfirmed}
                                 onChange={(e) => setFormData(prev => ({ ...prev, deleteConfirmed: (e.target as HTMLInputElement).checked }))}
                             />
                             <span className="text-sm text-gray-700">
@@ -643,7 +632,7 @@ export default function SettingsPage() {
                         </Button>
                         <Button
                             variant="destructive"
-                            disabled={deleteConfirm !== 'DELETE' || !formData.deleteConfirmed}
+                            disabled={deleteConfirm !== 'DELETE' || !deleteConfirmed}
                             onClick={handleDeleteAccount}
                         >
                             Permanently Delete Account
